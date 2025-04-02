@@ -1,11 +1,9 @@
 package com.example.levelup.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jdk.jfr.Enabled;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -14,12 +12,30 @@ import lombok.Data;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-
+    @Column(name = "firstname")
     private String firstName;
 
+    @Column(name = "lastname")
+    private String lastName;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @OneToMany(mappedBy = "user")
+    private List<Habit> habits;
 
 
 }
