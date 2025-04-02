@@ -16,19 +16,19 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "firstname")
+    @Column(name = "firstname", nullable = false)
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "lastname", nullable = false)
     private String lastName;
 
     @Column(name = "username")
     private String username;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "phone")
