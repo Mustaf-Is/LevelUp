@@ -35,7 +35,7 @@ public class HabitService {
             existingHabit.setUser(habit.getUser());
             existingHabit.setCategory(habit.getCategory());
         }
-        return existingHabit;
+        return existingHabit != null ? habitRepository.save(existingHabit) : null;
     }
     public void deleteHabit(int id) {
         habitRepository.deleteById(id);
