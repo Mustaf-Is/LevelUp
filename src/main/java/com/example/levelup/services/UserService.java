@@ -29,14 +29,15 @@ public class UserService {
     public User updateUser(int id, User user) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
-            existingUser.setFirstName(existingUser.getFirstName());
-            existingUser.setLastName(existingUser.getLastName());
-            existingUser.setEmail(existingUser.getEmail());
-            existingUser.setPassword(existingUser.getPassword());
-            existingUser.setUsername(existingUser.getUsername());
-            existingUser.setPhone(existingUser.getPhone());
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setPassword(user.getPassword());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPhone(user.getPhone());
         }
-        return existingUser;
+        //assert existingUser != null;
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(int id) {
