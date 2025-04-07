@@ -1,11 +1,9 @@
 package com.example.levelup.DTOs;
 
+
 import com.example.levelup.models.Habit;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
-//import lombok.data;
 
 
 public record UserDTO(
@@ -15,6 +13,6 @@ public record UserDTO(
         String username,
         String password,
         String phone,
-        List<Habit> habits
+        List<HabitDTO> habits
 ) {
 }
