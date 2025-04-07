@@ -1,5 +1,6 @@
 package com.example.levelup.controllers;
 
+import com.example.levelup.mappers.HabitMapper;
 import com.example.levelup.models.Habit;
 import com.example.levelup.services.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 public class HabitController {
 
     private final HabitService habitService;
+//    private final HabitMapper habitMapper;
 
     @Autowired
     public HabitController(HabitService habitService) {
