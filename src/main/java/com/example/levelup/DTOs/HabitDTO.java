@@ -8,7 +8,6 @@ public record HabitDTO(
         String endDate,
         String category,
         int userId,
-        int categoryId,
-        String categoryName
+        int categoryId
 ) {
 }
