@@ -1,13 +1,18 @@
 package com.example.levelup.controllers;
 
+import com.example.levelup.DTOs.UserDTO;
+import com.example.levelup.mappers.UserMapper;
 import com.example.levelup.models.User;
+import com.example.levelup.repositories.UserRepository;
 import com.example.levelup.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,6 +23,7 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+
     }
 
     @PostMapping
@@ -27,18 +33,21 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserDTO> userDTOs = users.stream()
+                .map(UserMapper::toDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable int id) {
         User user = userService.getUserById(id);
         if(user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserDTO userDTO = UserMapper.toDTO(user);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

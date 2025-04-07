@@ -1,5 +1,6 @@
 package com.example.levelup.services;
 
+import com.example.levelup.DTOs.UserDTO;
 import com.example.levelup.models.User;
 import com.example.levelup.repositories.UserRepository;
 import org.springframework.stereotype.Service;
