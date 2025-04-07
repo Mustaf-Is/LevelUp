@@ -1,5 +1,6 @@
 package com.example.levelup.controllers;
 
+import com.example.levelup.DTOs.HabitDTO;
 import com.example.levelup.mappers.HabitMapper;
 import com.example.levelup.models.Habit;
 import com.example.levelup.services.HabitService;
@@ -9,47 +10,53 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/habits")
 public class HabitController {
 
     private final HabitService habitService;
-//    private final HabitMapper habitMapper;
+    private final HabitMapper habitMapper;
 
     @Autowired
-    public HabitController(HabitService habitService) {
+    public HabitController(HabitService habitService, HabitMapper habitMapper) {
         this.habitService = habitService;
+        this.habitMapper = habitMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Habit>> getAllHabits() {
+    public ResponseEntity<List<HabitDTO>> getAllHabits() {
         List<Habit> habits = habitService.getAllHabits();
-        return new ResponseEntity<>(habits, HttpStatus.OK);
+        List<HabitDTO> habitDTOs = habits.stream()
+                .map(habitMapper::toDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(habitDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Habit> getHabitById(@PathVariable int id) {
+    public ResponseEntity<HabitDTO> getHabitById(@PathVariable int id) {
         Habit habit = habitService.getHabitById(id);
         if (habit == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(habit, HttpStatus.OK);
+        return new ResponseEntity<>(habitMapper.toDTO(habit), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Habit> createHabit(@RequestBody Habit habit) {
+    public ResponseEntity<HabitDTO> createHabit(@RequestBody HabitDTO habitDTO) {
+        Habit habit = habitMapper.toEntity(habitDTO);
         Habit createdHabit = habitService.createHabit(habit);
-        return new ResponseEntity<>(createdHabit, HttpStatus.CREATED);
+        return new ResponseEntity<>(habitMapper.toDTO(createdHabit), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Habit> updateHabit(@PathVariable int id, @RequestBody Habit habit) {
-        Habit updatedHabit = habitService.updateHabit(id, habit);
+    public ResponseEntity<HabitDTO> updateHabit(@PathVariable int id, @RequestBody HabitDTO habitDTO) {
+        Habit updatedHabit = habitService.updateHabit(id, habitMapper.toEntity(habitDTO));
         if (updatedHabit == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(updatedHabit, HttpStatus.OK);
+        return new ResponseEntity<>(habitMapper.toDTO(updatedHabit), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

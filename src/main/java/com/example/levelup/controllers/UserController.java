@@ -46,7 +46,7 @@ public class UserController {
         if(user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        UserDTO userDTO = UserMapper.toDTO(user);
+        UserDTO userDTO = UserMapper.toDTOWithHabits(user);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
