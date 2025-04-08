@@ -1,6 +1,7 @@
 
 package com.example.levelup.mappers;
 
+import com.example.levelup.DTOs.CreateUserDTO;
 import com.example.levelup.DTOs.HabitDTO;
 import com.example.levelup.models.User;
 import com.example.levelup.models.Habit;
@@ -20,12 +21,40 @@ public class UserMapper {
         user.setFirstName(dto.firstName());
         user.setLastName(dto.lastName());
         user.setUsername(dto.username());
-        user.setPassword(dto.password());
+        user.setEmail(dto.email());
         user.setPhone(dto.phone());
         List<HabitDTO> habitsDTO = dto.habits();
         user.setHabits(toHabits(habitsDTO));
 
         return user;
+    }
+
+    public static User toCreateEntity(CreateUserDTO dto) {
+        User user = new User();
+
+        user.setId(dto.id());
+        user.setFirstName(dto.firstName());
+        user.setLastName(dto.lastName());
+        user.setUsername(dto.username());
+        user.setEmail(dto.email());
+        user.setPassword(dto.password());
+        user.setPhone(dto.phone());
+
+
+        return user;
+    }
+
+    public static CreateUserDTO toCreateDTO(User user) {
+        return new CreateUserDTO(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getPhone()
+
+        );
     }
 
     public static UserDTO toDTO(User user) {
@@ -34,7 +63,7 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),
-                user.getPassword(),
+                user.getEmail(),
                 user.getPhone(),
                 null
         );
@@ -46,7 +75,7 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),
-                user.getPassword(),
+                user.getEmail(),
                 user.getPhone(),
                 toHabitDTOs(user.getHabits())
         );

@@ -1,16 +1,15 @@
 package com.example.levelup.controllers;
 
+import com.example.levelup.DTOs.CreateUserDTO;
 import com.example.levelup.DTOs.UserDTO;
 import com.example.levelup.mappers.UserMapper;
 import com.example.levelup.models.User;
-import com.example.levelup.repositories.UserRepository;
 import com.example.levelup.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,16 +26,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<CreateUserDTO> createUser(@RequestBody CreateUserDTO userDTO) {
+        User user = UserMapper.toCreateEntity(userDTO);
         User savedUser = userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(UserMapper.toCreateDTO(savedUser), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = users.stream()
-                .map(UserMapper::toDTO).collect(Collectors.toList());
+                .map(UserMapper::toDTOWithHabits).collect(Collectors.toList());
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
 
@@ -51,9 +51,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public ResponseEntity<CreateUserDTO> updateUser(@PathVariable int id, @RequestBody CreateUserDTO userDTO) {
+        User updatedUser = userService.updateUser(id, UserMapper.toCreateEntity(userDTO));
+        return new ResponseEntity<>(UserMapper.toCreateDTO(updatedUser), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
