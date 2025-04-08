@@ -7,7 +7,7 @@ public record ChallengeDTO(
         String name,
         String description,
         LocalDateTime startDate,
-        LocalDateTime endDate
-
+        LocalDateTime endDate,
+        UserDTO creator
 ) {
 }

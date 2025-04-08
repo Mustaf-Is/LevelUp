@@ -2,6 +2,8 @@ package com.example.levelup.controllers;
 import com.example.levelup.DTOs.ChallengeDTO;
 import com.example.levelup.mappers.ChallengeMapper;
 
+import com.example.levelup.models.Challenge;
+import com.example.levelup.services.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +47,7 @@ public class ChallengeController {
     public ResponseEntity<ChallengeDTO> createChallenge(@RequestBody ChallengeDTO challengeDTO) {
         Challenge challenge = challengeMapper.toEntity(challengeDTO);
         Challenge createdChallenge = challengeService.createChallenge(challenge);
-        return new ResponseEntity<>(challengeMapper.toDTO(createdChallenge), HttpStatus.CREATEDChallenge)
+        return new ResponseEntity<>(challengeMapper.toDTO(createdChallenge), HttpStatus.CREATED);
     }
 
 

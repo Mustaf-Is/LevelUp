@@ -37,5 +37,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Habit> habits;
 
+    @OneToMany(mappedBy = "creator")
+    private List<Challenge> createdChallenges;
+
 
 }
