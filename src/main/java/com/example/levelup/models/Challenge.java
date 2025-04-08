@@ -1,10 +1,11 @@
 package com.example.levelup.models;
 
+import com.example.levelup.DTOs.UserDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 @Data
 @Entity
 @Table(name = "challenges")
@@ -24,5 +25,9 @@ public class Challenge {
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator;
 
 }

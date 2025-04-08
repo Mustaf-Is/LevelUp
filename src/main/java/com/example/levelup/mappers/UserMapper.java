@@ -23,8 +23,6 @@ public class UserMapper {
         user.setUsername(dto.username());
         user.setEmail(dto.email());
         user.setPhone(dto.phone());
-        List<HabitDTO> habitsDTO = dto.habits();
-        user.setHabits(toHabits(habitsDTO));
 
         return user;
     }
@@ -58,6 +56,9 @@ public class UserMapper {
     }
 
     public static UserDTO toDTO(User user) {
+        if (user == null) {
+            return null;
+        }
         return new UserDTO(
                 user.getId(),
                 user.getFirstName(),
