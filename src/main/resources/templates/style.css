@@ -1,12 +1,12 @@
 
-@font-face {
-    font-family: 'Electro Wave';
-    src: local('Electro Wave Vol.2_Free'),
-    url('templates/assets/fonts/Electro Wave Vol.2_Free.woff2') format('woff2'),
-    url('templates/assets/fonts/Electro Wave Vol.2_Free.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+/*@font-face {*/
+/*    font-family: 'Electro Wave';*/
+/*    src: local('Electro Wave Vol.2_Free'),*/
+/*    url('templates/assets/fonts/Electro Wave Vol.2_Free.woff2') format('woff2'),*/
+/*    url('templates/assets/fonts/Electro Wave Vol.2_Free.woff') format('woff');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
 body {
     background-color: #292f3d;
 }
@@ -28,7 +28,6 @@ body {
 .logo h1 {
     color: #3a99f5;
     font-weight: bold;
-    font-family: 'Electro Wave', cursive;
 }
 .btn-primary {
     background-color: #3a99f5;
@@ -57,3 +56,19 @@ input.form-control{
 label{
     color:#f8f4e6;
 }
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.04);
+    color: #3a99f5;
+    opacity: 0.8;
+    border-color: #3a99f5;
+    box-shadow: 0 0 0 0.25rem rgba(58, 153, 245, 0.25);
+}
+.form-control:focus::placeholder {
+    color: #3a99f5;
+}
+.form-control::placeholder {
+    color: #222a2c;
+    opacity: 0.8;
+}
+
