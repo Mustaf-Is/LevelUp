@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,5 +30,8 @@ public class Challenge {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
+
+    @OneToMany(mappedBy = "challenge")
+    private List<Participation> participants;
 
 }
