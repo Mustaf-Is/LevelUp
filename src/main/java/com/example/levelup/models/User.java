@@ -40,5 +40,8 @@ public class User {
     @OneToMany(mappedBy = "creator")
     private List<Challenge> createdChallenges;
 
+    @OneToMany(mappedBy = "user")
+    private List<Participation> participatingChallenges;
+
 
 }
