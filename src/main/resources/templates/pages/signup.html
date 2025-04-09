@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Level Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/templates/style.css">
+    <style>
+        .signup-container{
+            max-width: 600px;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container align-content-center">
+    <div class="signup-container">
+        <div class="logo">
+            <h1>Level Up</h1>
+            <p>Create your account to start your journey</p>
+        </div>
+
+        <form method="post" id="signup-form">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" required placeholder="Someone">
+                    <div class="text-danger"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" required placeholder="Somebody">
+                    <div class="text-danger"></div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" required placeholder="_User!2">
+                <div class="text-danger"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required placeholder="someone@example.com">
+                <div class="text-danger"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone (optional)</label>
+                <input type="tel" class="form-control" id="phone" placeholder="+38345100100">
+                <div class="text-danger"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required placeholder="Password must be 8 digits and include a number">
+                <div class="text-danger"></div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="termsAgreed" name="termsAgreed" required>
+                <label class="form-check-label" for="termsAgreed">I agree to the Terms of Service and Privacy Policy</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+
+        <div class="login-link">
+            <p>Already have an account? <a href="login.html">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script>
+
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        signup();
+    });
+    function signup(){
+        const requset = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            phone: document.getElementById("phone").value,
+        }
+        fetch("http://localhost:8080/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requset)
+        })
+        .then(response => {
+            response.json()
+            if(response.ok){
+                alert("User registered Successfully ")
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    }
+
+</script>
+</body>
+</html>
