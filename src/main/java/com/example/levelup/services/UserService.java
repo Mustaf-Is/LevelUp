@@ -27,6 +27,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
     public User updateUser(int id, User user) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
