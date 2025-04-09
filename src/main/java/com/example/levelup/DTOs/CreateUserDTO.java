@@ -12,4 +12,11 @@ public record CreateUserDTO(
         String phone
 
 ) {
+    public String getEmail() {
+        return email;
+    }
+
+    public String setToken(String token) {
+        return token;
+    }
 }
