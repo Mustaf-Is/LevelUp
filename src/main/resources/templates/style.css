@@ -1,9 +1,9 @@
 
 @font-face {
-    font-family: 'Game Of Squids';
-    src: local('Game Of Squids'),
-    url('templates/assets/fonts/Game Of Squids.woff2') format('woff2'),
-    url('templates/assets/fonts/Game Of Squids.woff') format('woff');
+    font-family: 'Electro Wave';
+    src: local('Electro Wave Vol.2_Free'),
+    url('templates/assets/fonts/Electro Wave Vol.2_Free.woff2') format('woff2'),
+    url('templates/assets/fonts/Electro Wave Vol.2_Free.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -28,7 +28,7 @@ body {
 .logo h1 {
     color: #3a99f5;
     font-weight: bold;
-    font-family: 'Game Of Squids', sans-serif;
+    font-family: 'Electro Wave', cursive;
 }
 .btn-primary {
     background-color: #3a99f5;

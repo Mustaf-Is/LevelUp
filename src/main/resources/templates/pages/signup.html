@@ -28,43 +28,43 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required placeholder="Someone">
                     <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required placeholder="Somebody">
                     <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" th:field="*{username}" required>
+                <input type="text" class="form-control" id="username" th:field="*{username}" required placeholder="_User!2">
                 <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                <input type="email" class="form-control" id="email" th:field="*{email}" required placeholder="someone@example.com">
                 <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
             </div>
 
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone (optional)</label>
-                <input type="tel" class="form-control" id="phone" th:field="*{phone}">
+                <input type="tel" class="form-control" id="phone" th:field="*{phone}" placeholder="+38345100100">
                 <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                <input type="password" class="form-control" id="password" th:field="*{password}" required placeholder="Password must be 8 digits and include a number">
                 <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
             </div>
 
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required placeholder="Password must be 8 digits and include a number">
             </div>
 
             <div class="mb-3 form-check">
