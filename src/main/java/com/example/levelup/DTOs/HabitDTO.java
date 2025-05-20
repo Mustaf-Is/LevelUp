@@ -1,5 +1,7 @@
 package com.example.levelup.DTOs;
 
+import com.example.levelup.Enums.Frequency;
+
 import java.time.LocalDateTime;
 
 public record HabitDTO(
@@ -8,6 +10,8 @@ public record HabitDTO(
         String description,
         LocalDateTime startDate,
         LocalDateTime endDate,
+        Frequency frequency,
+        int times,
         int userId,
         int categoryId
 ) {
