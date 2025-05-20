@@ -27,6 +27,8 @@ public class HabitMapper {
                 habit.getDescription(),
                 habit.getStartDate(),
                 habit.getEndDate(),
+                habit.getFrequency(),
+                habit.getTimes(),
                 habit.getUser() != null ? habit.getUser().getId() : 0,
                 habit.getCategory() != null ? habit.getCategory().getId() : 0
         );
@@ -39,6 +41,8 @@ public class HabitMapper {
         habit.setDescription(habitDTO.description());
         habit.setStartDate(habitDTO.startDate());
         habit.setEndDate(habitDTO.endDate());
+        habit.setFrequency(habitDTO.frequency());
+        habit.setTimes(habitDTO.times());
         if(habitDTO.userId() > 0) {
             habit.setUser(userRepository.findById(habitDTO.userId()).orElse(null));
         }

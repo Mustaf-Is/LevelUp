@@ -32,6 +32,8 @@ public class HabitService {
             existingHabit.setDescription(habit.getDescription());
             existingHabit.setStartDate(habit.getStartDate());
             existingHabit.setEndDate(habit.getEndDate());
+            existingHabit.setFrequency(habit.getFrequency());
+            existingHabit.setTimes(habit.getTimes());
             existingHabit.setUser(habit.getUser());
             existingHabit.setCategory(habit.getCategory());
         }
