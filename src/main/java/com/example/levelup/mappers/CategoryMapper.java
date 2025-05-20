@@ -69,6 +69,8 @@ public class CategoryMapper {
                         habit.getDescription(),
                         habit.getStartDate(),
                         habit.getEndDate(),
+                        habit.getFrequency(),
+                        habit.getTimes(),
                         habit.getUser() != null ? habit.getUser().getId() : 0,
                         habit.getCategory() != null ? habit.getCategory().getId() : 0
                 ))
