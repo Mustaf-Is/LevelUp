@@ -1,5 +1,6 @@
 package com.example.levelup.models;
 
+import com.example.levelup.Enums.Frequency;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,6 +27,13 @@ public class Habit {
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "frequency_type", nullable = false)
+    private Frequency frequency;
+
+    @Column(name = "frequency_times", nullable = false)
+    private int times;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
