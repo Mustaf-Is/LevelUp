@@ -52,21 +52,19 @@
             password: document.getElementById("password").value
         }
         fetch("http://localhost:8080/api/auth/login", {
-          method: "POST",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(request)
         }).then(response => {
             if(response.ok){
+
                 response.json().then(res => {
-                    alert("Login successful");
-
-                    // Now you can access the token
-                    console.log("Token:", res.token);
-
                     // Optional: store token in localStorage
                     localStorage.setItem("token", res.token);
+                    // Redirect to home page
+                    window.location.href = "../home.html";
                 });
             } else {
                 alert("Invalid credentials")
