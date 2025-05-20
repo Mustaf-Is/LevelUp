@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Category - Level Up</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+  <div class="col-md-6 offset-md-3">
+    <div class="card shadow-sm p-4">
+      <h2 class="mb-4">Create New Category</h2>
+
+      <form id="category-form">
+        <div class="mb-3">
+          <label for="name" class="form-label">Category Name</label>
+          <input type="text" class="form-control" id="name" required placeholder="e.g. Fitness, Study, etc.">
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" rows="4" required placeholder="Describe this category..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Create Category</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("category-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    createCategory();
+  });
+
+  function createCategory() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("You must be logged in.");
+      return;
+    }
+
+    const request = {
+      name: document.getElementById("name").value,
+      description: document.getElementById("description").value
+    };
+
+    fetch("http://localhost:8080/api/categories", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify(request)
+    }).then(response => {
+      if (response.ok) {
+        alert("Category created successfully!");
+        document.getElementById("category-form").reset();
+      } else {
+        response.json().then(err => {
+          alert("Failed to create category: " + (err.message || "Unknown error"));
+        });
+      }
+    }).catch(error => {
+      console.error("Error:", error);
+      alert("Something went wrong.");
+    });
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
