@@ -1,5 +1,7 @@
 package com.example.levelup.services;
 import java.util.List;
+
+import com.example.levelup.DTOs.HabitDTO;
 import com.example.levelup.models.Habit;
 import com.example.levelup.repositories.HabitRepository;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,11 @@ public class HabitService {
     public List<Habit> getAllHabits() {
         return habitRepository.findAll();
     }
+
+    public List<Habit> getAllHabitsByUser(int userId) {
+        return habitRepository.findByUserId(userId);
+    }
+
 
     public Habit getHabitById(int id) {
         return habitRepository.findById(id).orElse(null);
