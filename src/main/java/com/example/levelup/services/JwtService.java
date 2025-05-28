@@ -24,6 +24,7 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("email", user.getEmail())
+                .claim("userId", user.getId())
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plus(24, ChronoUnit.HOURS)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -39,6 +40,9 @@ public class JwtService {
         return extractClaims(token).get("email", String.class);
     }
 
+    public Integer extractUserId(String token) {
+        return extractClaims(token).get("userId", Integer.class);
+    }
     public String extractUsername(String token) {
         return extractClaims(token).getSubject();
     }
