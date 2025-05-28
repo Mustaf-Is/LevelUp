@@ -34,6 +34,15 @@ public class HabitController {
         return new ResponseEntity<>(habitDTOs, HttpStatus.OK);
     }
 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<List<HabitDTO>> getHabitsByUser(@PathVariable int id) {
+        List<Habit> habits = habitService.getAllHabitsByUser(id);
+        List<HabitDTO> habitDTOS = habits.stream()
+                .map(habitMapper::toDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(habitDTOS, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<HabitDTO> getHabitById(@PathVariable int id) {
         Habit habit = habitService.getHabitById(id);
