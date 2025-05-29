@@ -8,4 +8,6 @@ import java.util.List;
 public interface HabitRepository extends JpaRepository<Habit, Integer> {
 
     List<Habit> findByUserId(int userId);
+
+    List<Habit> findByUserIdAndCategoryId(int userId, int categoryId);
 }
