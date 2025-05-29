@@ -35,7 +35,7 @@ public class HabitController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<List<HabitDTO>> getHabitsByUser(@PathVariable int id) {
+    public ResponseEntity<List<HabitDTO>> getHabitsByUser(@PathVariable Integer id) {
         List<Habit> habits = habitService.getAllHabitsByUser(id);
         List<HabitDTO> habitDTOS = habits.stream()
                 .map(habitMapper::toDTO)
