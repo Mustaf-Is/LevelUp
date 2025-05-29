@@ -70,6 +70,16 @@
     .btnHabit{
 
     }
+
+    .btn-category {
+      color: #3a99f5;
+      font-weight: bold;
+      font-size: 18px;
+
+    }
+    .btn-category:hover {
+      color: #116ab9;
+    }
   </style>
 </head>
 <body>
@@ -101,7 +111,15 @@
 
       <div class="mt-4">
         <h6 class="text-white" style="font-weight: 400">HABIT CREATION</h6>
-        <a class="nav-link btnHabit" href="#" data-bs-toggle="modal" data-bs-target="#addHabitModal"> <img src="./images/add.svg" alt="add icon" style="width:30px; height: 30px;"> <span style="padding-left: 5px; font-weight: bold; color: #3a99f5; font-size: 18px">Add a Habit</span></a>
+        <a class="nav-link btnHabit" href="#" data-bs-toggle="modal" data-bs-target="#addHabitModal">
+          <img src="./images/add.svg" alt="add icon" style="width:30px; height: 30px;">
+          <span style="padding-left: 5px; font-weight: bold; color: #3a99f5; font-size: 18px">Add a Habit</span>
+        </a>
+
+        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+          <img src="./images/add.svg" alt="add icon" style="width:30px; height: 30px;">
+          <span style="padding-left: 5px; font-weight: bold; color: #3a99f5; font-size: 18px">Add a Category</span>
+        </a>
         <h6 class="text-white" style="font-weight: 400; padding-top: 10px">HABIT MANAGEMENT</h6>
         <a class="nav-link" href="#">Manage Habits</a>
         <a class="nav-link" href="#">App Settings</a>
@@ -114,6 +132,34 @@
       <h4><img src="./images/all.svg" alt="all icon" style="width:40px; height: 40px;"> <span style="padding-left: 5px; font-weight: bold">All Habits </span></h4>
       <div id="habitsContainer">
         <!-- Habits will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addCategoryForm">
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">Name *</label>
+            <input type="text" class="form-control" id="categoryName" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="categoryDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="categoryDescription" name="description" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-succeed" onclick="createCategory()">Create Category</button>
       </div>
     </div>
   </div>
@@ -688,6 +734,68 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
     modal.show();
   }
+
+  // Function to create a new category
+  async function createCategory() {
+    const form = document.getElementById('addCategoryForm');
+    const formData = new FormData(form);
+
+    if (!token) {
+      alert('Authentication required. Please log in.');
+      window.location.href = '/login';
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const categoryData = {
+      name: formData.get('name'),
+      description: formData.get('description') || ''
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/categories', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(categoryData)
+      });
+
+      if (response.status === 401) {
+        alert('Authentication expired. Please log in again.');
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+        return;
+      }
+
+      if (response.ok) {
+        const createdCategory = await response.json();
+        console.log('Category created successfully:', createdCategory);
+        alert('Category created successfully!');
+
+        // Close the modal and reset the form
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+        modal.hide();
+        form.reset();
+
+        // Refresh the categories dropdown
+        loadCategoriesForDropdown();
+      } else {
+        const errorText = await response.text();
+        console.error('Failed to create category:', errorText);
+        alert('Failed to create category. Please check your input and try again.');
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // Clear form when modal is hidden
+  document.getElementById('addCategoryModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('addCategoryForm').reset();
+  });
 
   // Add this function to handle the actual deletion
   async function confirmDelete() {
