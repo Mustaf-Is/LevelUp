@@ -83,9 +83,22 @@
         <strong id="userDisplayName">User</strong>
       </div>
       <nav class="nav flex-column">
-        <a class="nav-link active" href="#"><img src="./images/all.svg" alt="all icon" style="width:25px; height: 25px;"> <span style="padding-left: 5px; font-weight: bold">All Habits </span></a>
-        <a class="nav-link" href="/categories">Categories</a>
+        <a class="nav-link active" href="#"><img src="./images/all.svg" alt="all icon" style="width:25px; height: 25px;">
+          <span onclick="loadHabits()" style="padding-left: 5px; font-weight: bold">All Habits</span>
+        </a>
+
+        <!-- Dropdown Toggle -->
+        <button class="nav-link dropdown-btn" style="text-align: left; background: none; border: none;">
+          <img src="./images/folder.svg" alt="categories icon" style="width:25px; height: 25px;">
+          <span style="padding-left: 5px; font-weight: bold">Categories</span>
+        </button>
+
+        <!-- Dropdown Container -->
+        <div class="dropdown-container" id="categoryDropdownContainer" style="display: none; padding-left: 20px;">
+          <!-- Categories will be dynamically injected here -->
+        </div>
       </nav>
+
       <div class="mt-4">
         <h6 class="text-white" style="font-weight: 400">HABIT CREATION</h6>
         <a class="nav-link btnHabit" href="#" data-bs-toggle="modal" data-bs-target="#addHabitModal"> <img src="./images/add.svg" alt="add icon" style="width:30px; height: 30px;"> <span style="padding-left: 5px; font-weight: bold; color: #3a99f5; font-size: 18px">Add a Habit</span></a>
@@ -261,10 +274,69 @@
   // Global variables
   const token = localStorage.getItem('token');
 
-  document.addEventListener('DOMContentLoaded', function() {
-    initializeAuth();
-    loadHabits();
+  // Function to load habits by category
+  async function loadHabitsByCategory(categoryId) {
+    try {
+      const userId = getUserId();
+      const response = await fetch(`http://localhost:8080/api/habits/users/${userId}/categories/${categoryId}`, {
+        method: 'GET',
+        headers: getAuthHeaders()
+      });
+
+      if (response.ok) {
+        const habits = await response.json();
+        displayHabits(habits);
+      } else {
+        console.error('Failed to load habits by category:', response.status);
+      }
+    } catch (error) {
+      console.error('Error loading habits by category:', error);
+    }
+  }
+
+async function loadCategoryDropdown() {
+  try {
+    const response = await fetch('http://localhost:8080/api/categories', {
+      method: 'GET',
+      headers: getAuthHeaders()
+    });
+
+    if (response.ok) {
+      const categories = await response.json();
+      const dropdownContainer = document.getElementById('categoryDropdownContainer');
+      dropdownContainer.innerHTML = ''; // Clear existing items
+
+      categories.forEach(category => {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.className = 'nav-link';
+        link.textContent = category.name;
+        link.onclick = (e) => {
+          e.preventDefault();
+          loadHabitsByCategory(category.id);
+        };
+        dropdownContainer.appendChild(link);
+      });
+    }
+  } catch (error) {
+    console.error('Error loading categories:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownBtn = document.querySelector('.dropdown-btn');
+  const dropdownContainer = document.getElementById('categoryDropdownContainer');
+  
+  // Add click event for dropdown button
+  dropdownBtn.addEventListener('click', function() {
+    const isHidden = dropdownContainer.style.display === 'none';
+    dropdownContainer.style.display = isHidden ? 'block' : 'none';
+    loadCategoryDropdown(); // Load categories when dropdown is opened
   });
+
+  initializeAuth();
+  loadHabits();
+});
 
   // Load categories when the update modal is shown
   document.getElementById('updateHabitModal').addEventListener('show.bs.modal', function () {

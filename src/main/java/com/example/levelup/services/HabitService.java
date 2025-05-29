@@ -23,6 +23,10 @@ public class HabitService {
         return habitRepository.findByUserId(userId);
     }
 
+    public List<Habit> getAllHabitsByUserAndCategory(int userId, int categoryId) {
+        return habitRepository.findByUserIdAndCategoryId(userId, categoryId);
+    }
+
 
     public Habit getHabitById(int id) {
         return habitRepository.findById(id).orElse(null);
