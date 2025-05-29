@@ -99,7 +99,7 @@
 
         <!-- Dropdown Toggle -->
         <button class="nav-link dropdown-btn" style="text-align: left; background: none; border: none;">
-          <img src="./images/folder.svg" alt="categories icon" style="width:25px; height: 25px;">
+          <img src="./images/category-svgrepo-com%20(2).svg" alt="categories icon" style="width:25px; height: 25px;">
           <span style="padding-left: 5px; font-weight: bold">Categories</span>
         </button>
 
@@ -548,6 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Function to display habits
+  // Function to display habits
   function displayHabits(habits) {
     const container = document.getElementById('habitsContainer');
     container.innerHTML = ''; // Clear old habits
@@ -571,30 +572,31 @@ document.addEventListener('DOMContentLoaded', function() {
       };
 
       card.innerHTML = `
-        <h5>${habit.title}</h5>
-        <p>${habit.description || 'No description'}</p>
-        <p><strong>Frequency:</strong> ${formatFrequency(habit.frequency)}</p>
-        <p><strong>Times:</strong> ${habit.times}</p>
-        <p><strong>Start:</strong> ${new Date(habit.startDate).toLocaleString()}</p>
-        ${habit.endDate ? `<p><strong>End:</strong> ${new Date(habit.endDate).toLocaleString()}</p>` : ''}
-        <div class="d-flex gap-2 mt-3">
-          <button class="btn btn-succeed mark-completed">Mark as Completed</button>
-          <button class="btn btn-danger delete-habit">Delete Habit</button>
-        </div>
-      `;
+      <h5>${habit.title}</h5>
+      <p>${habit.description || 'No description'}</p>
+      <p><strong>Frequency:</strong> ${formatFrequency(habit.frequency)}</p>
+      <p><strong>Times:</strong> ${habit.times}</p>
+      <p><strong>Start:</strong> ${new Date(habit.startDate).toLocaleString()}</p>
+      ${habit.endDate ? `<p><strong>End:</strong> ${new Date(habit.endDate).toLocaleString()}</p>` : ''}
+      <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-succeed update-habit">Update Habit</button>
+        <button class="btn btn-danger delete-habit">Delete Habit</button>
+      </div>
+    `;
 
       // Show edit modal on click (excluding button clicks)
       card.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('mark-completed') &&
+        // CHANGED: Updated class name from 'mark-completed' to 'update-habit'
+        if (!e.target.classList.contains('update-habit') &&
                 !e.target.classList.contains('delete-habit')) {
           openUpdateHabitModal(habit);
         }
       });
 
-      // Handle "Mark as Completed"
-      card.querySelector('.mark-completed').addEventListener('click', async (e) => {
-        e.stopPropagation(); // prevent triggering modal
-        await markHabitAsCompleted(habit.id);
+      // NEW CODE: Handle "Update Habit" button click
+      card.querySelector('.update-habit').addEventListener('click', async (e) => {
+        e.stopPropagation(); // prevent triggering modal from card click
+        openUpdateHabitModal(habit);
       });
 
       // Handle "Delete Habit"
@@ -606,6 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
       container.appendChild(card);
     });
   }
+
 
   function openUpdateHabitModal(habit) {
     // Populate form fields
