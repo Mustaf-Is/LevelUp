@@ -8,55 +8,67 @@
   <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
   <style>
     body {
-      background-color: #121212;
+      background-color: #292f3d;
       color: #fff;
     }
     .sidebar {
-      background-color: #1e1e1e;
+      background-color: #343a47;
       height: 100vh;
       padding: 1rem;
     }
     .sidebar .nav-link {
       color: #ccc;
+      border-radius: 5px;
     }
     .sidebar .nav-link.active {
-      background-color: #2d2d2d;
+      background-color: #37425b;
       color: #fff;
     }
     .habit-card {
-      background-color: #1e1e1e;
+      background-color: #343a47 ;
       border-radius: 10px;
       padding: 1rem;
       margin-top: 1rem;
     }
     .btn-succeed {
-      background-color: #2d7d46;
-      border: none;
+      background-color: #3a99f5;
+      box-shadow: 0 4px 15px rgba(56, 118, 189, 0.65);
+      border: 2px solid rgba(255, 255, 255, 0.1);
       color: white;
     }
+
+    .btn-succeed:hover{
+      background-color: #116ab9;
+      border-color: #5a52d5;
+    }
     .modal-content {
-      background-color: #1e1e1e;
+      background-color: #343a47;
       color: #fff;
     }
     .modal-header {
-      border-bottom: 1px solid #2d2d2d;
+      border-bottom: 1px solid #3a99f5;
     }
     .modal-footer {
-      border-top: 1px solid #2d2d2d;
+      border-top: 1px solid #3a99f5;
     }
     .form-control, .form-select {
-      background-color: #2d2d2d;
-      border: 1px solid #444;
+      background-color: #343a47;
+      border: 2px solid #3a99f5;
+      padding: 10px;
       color: #fff;
     }
     .form-control:focus, .form-select:focus {
-      background-color: #2d2d2d;
-      border-color: #2d7d46;
-      color: #fff;
-      box-shadow: 0 0 0 0.2rem rgba(45, 125, 70, 0.25);
+      background-color: #343a47;
+      color: #fefefe;
+      opacity: 0.8;
+      border-color: #3a99f5;
+      box-shadow: 0 0 0 0.25rem rgba(58, 153, 245, 0.25);
     }
     .form-label {
       color: #ccc;
+    }
+    .btnHabit{
+
     }
   </style>
 </head>
@@ -67,18 +79,17 @@
     <!-- Sidebar -->
     <div class="col-md-3 sidebar d-flex flex-column">
       <div class="mb-4 d-flex align-items-center">
-        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Profile">
+        <img src="./images/profile.svg" class="rounded-circle me-2" alt="Profile" style="width: 40px; height: 40px;">
         <strong id="userDisplayName">User</strong>
       </div>
       <nav class="nav flex-column">
-        <a class="nav-link active" href="#">All Habits</a>
-        <a class="nav-link" href="#">Afternoon</a>
+        <a class="nav-link active" href="#"><img src="./images/all.svg" alt="all icon" style="width:25px; height: 25px;"> <span style="padding-left: 5px; font-weight: bold">All Habits </span></a>
         <a class="nav-link" href="/categories">Categories</a>
       </nav>
       <div class="mt-4">
-        <h6 class="text-muted">AREAS</h6>
-        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addHabitModal">+ Add a Habit</a>
-        <h6 class="text-muted mt-3">PREFERENCES</h6>
+        <h6 class="text-white" style="font-weight: 400">HABIT CREATION</h6>
+        <a class="nav-link btnHabit" href="#" data-bs-toggle="modal" data-bs-target="#addHabitModal"> <img src="./images/add.svg" alt="add icon" style="width:30px; height: 30px;"> <span style="padding-left: 5px; font-weight: bold; color: #3a99f5; font-size: 18px">Add a Habit</span></a>
+        <h6 class="text-white" style="font-weight: 400; padding-top: 10px">HABIT MANAGEMENT</h6>
         <a class="nav-link" href="#">Manage Habits</a>
         <a class="nav-link" href="#">App Settings</a>
         <a class="nav-link" href="#">Resources</a>
@@ -87,8 +98,7 @@
 
     <!-- Main Content -->
     <div class="col-md-9 p-4">
-      <h4>All Habits</h4>
-      <p class="text-muted">Loading habits...</p>
+      <h4><img src="./images/all.svg" alt="all icon" style="width:40px; height: 40px;"> <span style="padding-left: 5px; font-weight: bold">All Habits </span></h4>
       <div id="habitsContainer">
         <!-- Habits will be loaded here -->
       </div>
@@ -141,9 +151,9 @@
               <label for="habitFrequency" class="form-label">Frequency *</label>
               <select class="form-select" id="habitFrequency" name="frequency" required>
                 <option value="">Select frequency</option>
-                <option value="PERDAY">Per Day</option>
-                <option value="PERWEEK">Per Week</option>
-                <option value="PERMONTH">Per Month</option>
+                <option value="PERDAY">Daily</option>
+                <option value="PERWEEK">Weekly</option>
+                <option value="PERMONTH">Monthly</option>
               </select>
             </div>
             <div class="col-md-6 mb-3">
@@ -304,6 +314,18 @@
       return null;
     }
   }
+  function getUsername() {
+    if (!token) {
+      return null;
+    }
+    try {
+      const decoded = jwt_decode(token); // Note: jwt_decode not jwtDecode
+      return decoded.sub;
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+      return null;
+    }
+  }
 
   // Helper function to get auth headers
   function getAuthHeaders() {
@@ -320,9 +342,12 @@
       window.location.href = '/login';
       return;
     }
-
     const userId = getUserId();
-    console.log(userId);
+    const username = getUsername();
+
+    if (username) {
+      document.getElementById('userDisplayName').textContent = username;
+    }
   }
 
   // Load categories when the modal is shown
@@ -414,10 +439,23 @@
       card.className = 'habit-card p-3 shadow-sm';
       card.setAttribute('data-habit-id', habit.id);
 
+      const formatFrequency = (frequency) => {
+        switch(frequency) {
+          case 'PERDAY':
+            return 'Daily';
+          case 'PERWEEK':
+            return 'Weekly';
+          case 'PERMONTH':
+            return 'Monthly';
+          default:
+            return frequency; // fallback to original value
+        }
+      };
+
       card.innerHTML = `
         <h5>${habit.title}</h5>
         <p>${habit.description || 'No description'}</p>
-        <p><strong>Frequency:</strong> ${habit.frequency}</p>
+        <p><strong>Frequency:</strong> ${formatFrequency(habit.frequency)}</p>
         <p><strong>Times:</strong> ${habit.times}</p>
         <p><strong>Start:</strong> ${new Date(habit.startDate).toLocaleString()}</p>
         ${habit.endDate ? `<p><strong>End:</strong> ${new Date(habit.endDate).toLocaleString()}</p>` : ''}
